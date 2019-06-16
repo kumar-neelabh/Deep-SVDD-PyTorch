@@ -2,6 +2,7 @@ import numpy as np
 import torch
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import roc_curve
+from sklearn.metrics import confusion_matrix
 
 class Classifier:
   '''
@@ -19,6 +20,7 @@ class Classifier:
     self.acc_thresh = None
     self.max_acc = None
     self.X = X
+    self.confusion_matrix = None
   
   def optim_thresh(self, score='acc'):
     if score == 'acc':
@@ -52,4 +54,13 @@ class Classifier:
       
     wrong_idx = np.array([i for i, pred in enumerate(self.y_pred) if pred != self.y_true[i]]).flatten()
     wrong_imgs = [self.X[index] for index in wrong_idx]
+    
     return wrong_imgs
+  
+  def confusion_matrix(self):
+    if self.y_pred is None:
+      _ = self.classify()
+      
+    conf_matrix = confusion_matrix(self.y_true, self.y_pred)
+    return conf_matrix
+ 
