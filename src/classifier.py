@@ -1,3 +1,4 @@
+import numpy as np
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import roc_curve
 
