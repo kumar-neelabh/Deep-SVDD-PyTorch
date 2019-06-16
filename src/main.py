@@ -199,5 +199,9 @@ def main(dataset_name, net_name, xp_path, data_path, load_config, load_model, ob
     random.shuffle(wrong_answers)
     plot_images_grid(wrong_answers[:32], export_img=xp_path + '/random wrong_answers', title='Wrongly classified examples', padding=2)
 
+    # Save confusion matrix
+    conf_matrix = clf.confusion_matrix()
+    np.savetxt('confusion_matrix.txt', conf_matrix, fmt='%d')
+    
 if __name__ == '__main__':
     main()
