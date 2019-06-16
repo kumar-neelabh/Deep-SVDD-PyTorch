@@ -1,4 +1,5 @@
 import numpy as np
+import torch
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import roc_curve
 
