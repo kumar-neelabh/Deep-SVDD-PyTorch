@@ -8,7 +8,7 @@ from utils.config import Config
 from utils.visualization.plot_images_grid import plot_images_grid
 from deepSVDD import DeepSVDD
 from datasets.main import load_dataset
-
+from classifier import Classifier
 
 ################################################################################
 # Settings
@@ -186,7 +186,11 @@ def main(dataset_name, net_name, xp_path, data_path, load_config, load_model, ob
     deep_SVDD.save_results(export_json=xp_path + '/results.json')
     deep_SVDD.save_model(export_model=xp_path + '/model.tar')
     cfg.save_config(export_json=xp_path + '/config.json')
-
+    
+    # Classify examples and get wrong answers
+    clf = Classifier(dataset.test_set.test_data, labels, scores)
+    wrong_answers = clf.wrong_answers()
+    plot_images_grid(wrong_answers, export_img=xp_path + '/wrong_answers', title='Wrongly classified examples', padding=2)
 
 if __name__ == '__main__':
     main()
