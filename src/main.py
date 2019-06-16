@@ -195,8 +195,9 @@ def main(dataset_name, net_name, xp_path, data_path, load_config, load_model, ob
     parts = len(wrong_answers) // 32
     for i in range(parts):
       plot_images_grid(wrong_answers[32*(i): 32*(i + 1)], export_img=xp_path + '/wrong_answers ' + str(i), title='Wrongly classified examples', padding=2)
-      
-    plot_images_grid(random.shuffle(wrong_answers)[:32], export_img=xp_path + '/random wrong_answers', title='Wrongly classified examples', padding=2)
+    
+    random.shuffle(wrong_answers)
+    plot_images_grid(wrong_answers[:32], export_img=xp_path + '/random wrong_answers', title='Wrongly classified examples', padding=2)
 
 if __name__ == '__main__':
     main()
