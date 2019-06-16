@@ -201,7 +201,7 @@ def main(dataset_name, net_name, xp_path, data_path, load_config, load_model, ob
 
     # Save confusion matrix
     conf_matrix = clf.conf_matrix()
-    np.savetxt('confusion_matrix.txt', conf_matrix, fmt='%d')
+    np.savetxt('xp_path/confusion_matrix.txt', conf_matrix, fmt='%d')
     
 if __name__ == '__main__':
     main()
