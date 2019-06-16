@@ -189,8 +189,14 @@ def main(dataset_name, net_name, xp_path, data_path, load_config, load_model, ob
     
     # Classify examples and get wrong answers
     clf = Classifier(dataset.test_set.test_data.unsqueeze(1), labels, scores)
-    wrong_answers = clf.wrong_answers()
-    plot_images_grid(wrong_answers[:32], export_img=xp_path + '/wrong_answers', title='Wrongly classified examples', padding=2)
+    wrong_answers = np.array(clf.wrong_answers())
+    logger.info('Test set accuracy: %g' % clf.max_acc)
+    
+    parts = len(wrong_answers) // 32
+    for i in range(parts):
+      plot_images_grid(wrong_answers[32*(i): 32*(i + 1)], export_img=xp_path + '/wrong_answers ' + str(i), title='Wrongly classified examples', padding=2)
+      
+    plot_images_grid(np.random.shuffle(wrong_answers)[:32], export_img=xp_path + '/random wrong_answers', title='Wrongly classified examples', padding=2)
 
 if __name__ == '__main__':
     main()
