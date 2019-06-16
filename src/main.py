@@ -188,7 +188,7 @@ def main(dataset_name, net_name, xp_path, data_path, load_config, load_model, ob
     cfg.save_config(export_json=xp_path + '/config.json')
     
     # Classify examples and get wrong answers
-    clf = Classifier(dataset.test_set.test_data, labels, scores)
+    clf = Classifier(dataset.test_set.test_data.unsqueeze(1), labels, scores)
     wrong_answers = clf.wrong_answers()
     plot_images_grid(wrong_answers, export_img=xp_path + '/wrong_answers', title='Wrongly classified examples', padding=2)
 
