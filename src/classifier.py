@@ -51,4 +51,4 @@ class Classifier:
       
     wrong_idx = np.array([i for i, pred in enumerate(self.y_pred) if pred != self.y_true[i]]).flatten()
     wrong_imgs = [self.X[index] for index in wrong_idx]
-    return np.expand_dims(wrong_imgs, axis=0)
+    return torch.Tensor(wrong_imgs).unsqueeze(1)
