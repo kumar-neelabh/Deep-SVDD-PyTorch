@@ -10,12 +10,13 @@ class Classifier:
   wrong_answers(): get the list of test examples the classifier() wrongly classified in order to optimize the metric
   '''
   
-  def __init__(self, y_true, probs):
+  def __init__(self, X, y_true, probs):
     self.y_true = y_true
     self.probs = probs
     self.y_pred = None
     self.acc_thresh = None
     self.max_acc = None
+    self.X = X
   
   def optim_thresh(self, score='acc'):
     if score == 'acc':
@@ -43,10 +44,10 @@ class Classifier:
 
     return 'metric not defined'
   
-  def wrong_answers(self, X, y):
-    y, self.y_true = np.array(y), np.array(self.y_true)
-    assert (self.y_true == y).all()
-    
+  def wrong_answers(self):
+    if self.y_pred is None:
+      _ = self.classify()
+      
     wrong_idx = np.array([i for i, pred in enumerate(self.y_pred) if pred != self.y_true[i]]).flatten()
-    wrong_imgs = [X[index] for index in wrong_idx]
+    wrong_imgs = [self.X[index] for index in wrong_idx]
     return wrong_imgs
