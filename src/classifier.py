@@ -57,10 +57,10 @@ class Classifier:
     
     return wrong_imgs
   
-  def confusion_matrix(self):
+  def conf_matrix(self):
     if self.y_pred is None:
       _ = self.classify()
       
-    conf_matrix = confusion_matrix(self.y_true, self.y_pred)
-    return conf_matrix
+    conf_mat = confusion_matrix(self.y_true, self.y_pred)
+    return conf_mat
  
