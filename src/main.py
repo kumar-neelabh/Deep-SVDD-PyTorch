@@ -188,7 +188,7 @@ def main(dataset_name, net_name, xp_path, data_path, load_config, load_model, ob
     cfg.save_config(export_json=xp_path + '/config.json')
     
     # Model description
-    logger.info('Center c: {:.8f}'.format(deep_SVDD.c))
+    #logger.info('Center c: {:.8f}'.format(deep_SVDD.c)) : c is a 32-dim number
     logger.info('Radius R: {:.8f}'.format(deep_SVDD.R))
     
     # Classify examples and get wrong answers
