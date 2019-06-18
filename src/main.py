@@ -187,10 +187,15 @@ def main(dataset_name, net_name, xp_path, data_path, load_config, load_model, ob
     deep_SVDD.save_model(export_model=xp_path + '/model.tar')
     cfg.save_config(export_json=xp_path + '/config.json')
     
+    # Model description
+    logger.info('Center c: {:.8f}'.format(deep_SVDD.c))
+    logger.info('Radius R: {:.8f}'.format(deep_SVDD.R))
+    
     # Classify examples and get wrong answers
     clf = Classifier(dataset.test_set.test_data.unsqueeze(1), labels, scores)
     wrong_answers = clf.wrong_answers()
-    logger.info('Test set accuracy: %g' % clf.max_acc)
+    logger.info('Optimum threshold: {:.8f}'.format(clf.acc_thresh))
+    logger.info('Test set accuracy: {:.8f}'.format(clf.max_acc))
     
     parts = len(wrong_answers) // 32
     for i in range(parts):
