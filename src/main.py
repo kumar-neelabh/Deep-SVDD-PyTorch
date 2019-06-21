@@ -192,7 +192,7 @@ def main(dataset_name, net_name, xp_path, data_path, load_config, load_model, ob
     logger.info('Radius R: {:.8f}'.format(deep_SVDD.R))
     
     # Classify examples and get wrong answers
-    clf = Classifier(dataset.test_set.test_data.unsqueeze(1), labels, scores)
+    clf = Classifier(dataset.test_set.test_data.unsqueeze(1), labels, scores, cfg.settings['objective'])
     wrong_answers = clf.wrong_answers()
     logger.info('Optimum threshold: {:.8f}'.format(clf.acc_thresh))
     logger.info('Test set accuracy: {:.8f}'.format(clf.max_acc))
