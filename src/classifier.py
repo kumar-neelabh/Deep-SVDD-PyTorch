@@ -13,13 +13,15 @@ class Classifier:
   wrong_answers(): get the list of test examples the classifier() wrongly classified in order to optimize the metric
   '''
   
-  def __init__(self, X, y_true, probs):
+  def __init__(self, X, y_true, probs, objective):
+    self.X = X
     self.y_true = y_true
     self.probs = probs
+    self.objective = objective
+    
     self.y_pred = None
     self.acc_thresh = None
     self.max_acc = None
-    self.X = X
     self.confusion_matrix = None
   
   def optim_thresh(self, score='acc'):
@@ -41,11 +43,16 @@ class Classifier:
     return 'metric not defined'
   
   def classify(self, score='acc'):
-    if score == 'acc':
-      thresh = self.optim_thresh(score='acc')
-      self.y_pred = [1 if m > thresh else 0 for m in self.probs]
+    if self.objective == 'one-class':
+      if score == 'acc':
+        thresh = self.optim_thresh(score='acc')
+        self.y_pred = [1 if m > thresh else 0 for m in self.probs]
+        return self.y_pred
+    
+    if self.objective == 'soft-boundary':
+      self.y_pred = [1 if m > 0 else 0 for m in self.probs]
       return self.y_pred
-
+      
     return 'metric not defined'
   
   def wrong_answers(self):
