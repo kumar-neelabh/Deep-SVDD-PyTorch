@@ -49,6 +49,7 @@ class Classifier:
     
     if self.objective == 'soft-boundary':
       self.y_pred = [1 if m > 0 else 0 for m in self.probs]
+      self.max_acc = accuracy_score(self.y_true, self.y_pred)
       return self.y_pred
       
     return 'metric not defined'
