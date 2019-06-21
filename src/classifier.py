@@ -33,12 +33,10 @@ class Classifier:
                                                [1 if m > thresh else 0 for m in self.probs]))
 
       accuracies = np.array(accuracy_scores)
-      max_acc = accuracies.max()
-      max_acc_thresh =  thresholds[accuracies.argmax()]
       
-      self.max_acc = max_acc
-      self.acc_thresh = max_acc_thresh
-      return max_acc_thresh
+      self.max_acc = accuracies.max()
+      self.acc_thresh = thresholds[accuracies.argmax()]
+      return self.acc_thresh
 
     return 'metric not defined'
   
