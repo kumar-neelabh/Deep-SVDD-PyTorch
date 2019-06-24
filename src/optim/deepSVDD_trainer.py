@@ -35,6 +35,10 @@ class DeepSVDDTrainer(BaseTrainer):
         self.test_auc = None
         self.test_time = None
         self.test_scores = None
+        
+        # Data
+        self.train_mapped = None
+        self.test_mapped = None
 
     def train(self, dataset: BaseADDataset, net: BaseNet):
         logger = logging.getLogger()
@@ -120,12 +124,14 @@ class DeepSVDDTrainer(BaseTrainer):
         logger.info('Starting testing...')
         start_time = time.time()
         idx_label_score = []
+        self.test_mapped = []
         net.eval()
         with torch.no_grad():
             for data in test_loader:
                 inputs, labels, idx = data
                 inputs = inputs.to(self.device)
                 outputs = net(inputs)
+                self.test_mapped.extend(outputs)
                 dist = torch.sum((outputs - self.c) ** 2, dim=1)
                 if self.objective == 'soft-boundary':
                     scores = dist - self.R ** 2
@@ -139,7 +145,10 @@ class DeepSVDDTrainer(BaseTrainer):
 
         self.test_time = time.time() - start_time
         logger.info('Testing time: %.3f' % self.test_time)
-
+        
+        self.test_mapped = np.array(self.test_mapped)
+        logger.info('Mapped Test Data Shape : (%d, %d)' % (self.test_mapped.shape[0], self.test_mapped.shape[1]))
+        
         self.test_scores = idx_label_score
 
         # Compute AUC
@@ -156,7 +165,8 @@ class DeepSVDDTrainer(BaseTrainer):
         """Initialize hypersphere center c as the mean from an initial forward pass on the data."""
         n_samples = 0
         c = torch.zeros(net.rep_dim, device=self.device)
-
+        
+        self.train_mapped = []
         net.eval()
         with torch.no_grad():
             for data in train_loader:
@@ -164,11 +174,14 @@ class DeepSVDDTrainer(BaseTrainer):
                 inputs, _, _ = data
                 inputs = inputs.to(self.device)
                 outputs = net(inputs)
+                self.train_mapped.extend(outputs)
                 n_samples += outputs.shape[0]
                 c += torch.sum(outputs, dim=0)
 
         c /= n_samples
-
+        self.train_mapped = np.array(self.train_mapped)
+        logger.info('Mapped Train Data Shape : (%d, %d)' % (self.train_mapped.shape[0], self.train_mapped.shape[1]))
+        
         # If c_i is too close to 0, set to +-eps. Reason: a zero unit can be trivially matched with zero weights.
         c[(abs(c) < eps) & (c < 0)] = -eps
         c[(abs(c) < eps) & (c > 0)] = eps
