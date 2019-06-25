@@ -182,7 +182,7 @@ class DeepSVDDTrainer(BaseTrainer):
                 inputs, _, _ = data
                 inputs = inputs.to(self.device)
                 outputs = net(inputs)
-                self.train_mapped.extend(outputs)
+                self.train_mapped.extend(outputs.tolist())
                 n_samples += outputs.shape[0]
                 c += torch.sum(outputs, dim=0)
 
