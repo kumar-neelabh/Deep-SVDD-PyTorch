@@ -57,7 +57,7 @@ class DeepSVDDTrainer(BaseTrainer):
         scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=self.lr_milestones, gamma=0.1)
 
         # Initialize hypersphere center c (if c not loaded)
-        if self.c is None:
+        if self.c is None or not None:
             logger.info('Initializing center c...')
             self.c = self.init_center_c(train_loader, net)
             logger.info('Center c initialized.')
