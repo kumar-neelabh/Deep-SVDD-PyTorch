@@ -148,7 +148,8 @@ class DeepSVDDTrainer(BaseTrainer):
         logger.info('Testing time: %.3f' % self.test_time)
         
         self.test_mapped = np.array(self.test_mapped)
-        logger.info('Mapped Test Data Shape : (%d, %d)' % (self.test_mapped.shape[0], self.test_mapped.shape[1]))
+        logger.info('Mapped Test Data Shape : SEE NEXT LINE')
+        logger.info(self.test_mapped.shape)
         
         self.test_scores = idx_label_score
 
@@ -181,7 +182,8 @@ class DeepSVDDTrainer(BaseTrainer):
 
         c /= n_samples
         self.train_mapped = np.array(self.train_mapped)
-        logger.info('Mapped Train Data Shape : (%d, %d)' % (self.train_mapped.shape[0], self.train_mapped.shape[1]))
+        logger.info('Mapped Train Data Shape : SEE NEXT LINE')
+        logger.info(self.train_mapped.shape)
         
         # If c_i is too close to 0, set to +-eps. Reason: a zero unit can be trivially matched with zero weights.
         c[(abs(c) < eps) & (c < 0)] = -eps
