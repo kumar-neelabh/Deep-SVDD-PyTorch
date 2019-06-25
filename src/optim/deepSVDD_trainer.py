@@ -137,7 +137,7 @@ class DeepSVDDTrainer(BaseTrainer):
                     logger.info('Shape of outputs: SEE NEXT LINE')
                     logger.info(outputs.shape)
                     flag = False
-                self.test_mapped.extend(outputs)
+                self.test_mapped.extend(list(outputs))
                 dist = torch.sum((outputs - self.c) ** 2, dim=1)
                 if self.objective == 'soft-boundary':
                     scores = dist - self.R ** 2
