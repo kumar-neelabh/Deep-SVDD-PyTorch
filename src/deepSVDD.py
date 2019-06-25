@@ -143,7 +143,7 @@ class DeepSVDD(object):
         
     def save_data(self, export_train, export_test):
         with open(export_train, 'w') as fp:
-            json.dump(self.trainer.train_mapped, fp)
+            json.dump(self.trainer.train_mapped.tolist(), fp)
             
         with open(export_test, 'w') as fp:
-            json.dump(self.trainer.test_mapped, fp)
+            json.dump(self.trainer.test_mapped.tolist(), fp)
