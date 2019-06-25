@@ -185,7 +185,7 @@ def main(dataset_name, net_name, xp_path, data_path, load_config, load_model, ob
     # Save results, model, and configuration
     deep_SVDD.save_results(export_json=xp_path + '/results.json')
     deep_SVDD.save_model(export_model=xp_path + '/model.tar')
-    deep_SVDD.save_data(export_train=xp_path + '/train_mapped.json')
+    deep_SVDD.save_data(export_train=xp_path + '/train_mapped.json', export_test=xp_path + '/test_mapped.json')
     cfg.save_config(export_json=xp_path + '/config.json')
     
     # Model description
